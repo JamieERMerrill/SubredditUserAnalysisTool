@@ -1,14 +1,10 @@
 # Copyright (c) 2018 by James Merrill, all rights reserved
 
-from Engine import UserHistoryScraper, Session, ConfigureLogging
+from Engine import UserHistoryScraper, Session, ConfigureLogging, Post
 import argparse
-import praw.models.reddit.more as more
 import os
 import datetime
 import logging
-
-
-from Engine.Utilities import flatten_more_comments, flatten_comment_chain
 
 
 class SubredditUserAnalyzer:
@@ -33,7 +29,7 @@ class SubredditUserAnalyzer:
                     if post.num_comments < self.comment_threshold:
                         continue
                     else:
-                        posts_to_return.append(post)
+                        posts_to_return.append(Post.Post.from_praw_post(post))
                         selected_post_ids.add(post.id)
             limit *= 2
 
@@ -44,19 +40,7 @@ class SubredditUserAnalyzer:
         for post in posts:
             logging.info("Gathering users from {}".format(post.title))
 
-            for comment in post.comments:
-                flattened_comments = []
-                if isinstance(comment, more.MoreComments):
-                    flattened_comments = flatten_more_comments(comment)
-                else:
-                    flattened_comments = flatten_comment_chain(comment)
-                    if comment.author:
-                        self.usernames.add(comment.author.name)
-
-                for comment_inner in flattened_comments:
-                    if comment_inner.author:
-                        self.usernames.add(comment_inner.author.name)
-
+            self.usernames = self.usernames.union(post.commenters)
             self.analyzed_posts.append(post)
 
     def run_analysis(self, days_to_analyze):
@@ -69,9 +53,18 @@ class SubredditUserAnalyzer:
         logging.info("Beginning dump")
         now = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         inner_dir_path = os.path.join(target_directory, "{}_{}".format(self.subreddit_name, now))
+        users_dir_path = os.path.join(inner_dir_path, "Users")
+        posts_dir_path = os.path.join(inner_dir_path, "Posts")
+
         os.makedirs(inner_dir_path, exist_ok=True)
+        os.makedirs(users_dir_path, exist_ok=True)
+        os.makedirs(posts_dir_path, exist_ok=True)
+
         for user in self.user_analyses.values():
-            user.dump(inner_dir_path)
+            user.dump(users_dir_path)
+
+        for post in self.analyzed_posts:
+            post.dump(posts_dir_path)
 
 
 if __name__ == "__main__":
