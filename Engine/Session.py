@@ -6,7 +6,7 @@ class Session:
     def __init__(self):
         self.creds = Engine.Credentials.Credentials()
         self.session = praw.Reddit(client_id=self.creds.id, client_secret=self.creds.secret,
-                                   user_agent="python:RadicalizationAnalysisEngine:v1.0.0 (by /u/ArbitraryAPIAccount")
+                                   user_agent=self.creds.user_agent)
 
     def get_user(self, username):
         return self.session.redditor(username)
