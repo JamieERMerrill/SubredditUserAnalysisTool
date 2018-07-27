@@ -1,0 +1,6 @@
+credentials.json
+Engine/__pycache__/
+
+.idea/
+venv/
+Results/
