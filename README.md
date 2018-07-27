@@ -63,3 +63,12 @@ get users to do analysis upon.
     'children': List[Comment]
 }
 ```
+
+## Backlog
+
+1. Finish making sure all data types can be loaded from both praw types and files in order to
+allow analysis to be run using existing run-files
+2. Multithread the data-gathering code to speed this darn thing up a little.
+3. Begin work on more intricate analysis tools, rather than just raw data acquisition
+4. Physically separate loading code, model code, and analysis code
+5. Write setup.py to allow local installation into site-packages to make running the scripts easier
