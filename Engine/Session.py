@@ -1,3 +1,5 @@
+# Copyright (c) 2018 by James Merrill, all rights reserved
+
 import Engine.Credentials
 import praw
 

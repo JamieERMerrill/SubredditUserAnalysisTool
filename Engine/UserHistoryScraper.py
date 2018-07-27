@@ -1,3 +1,5 @@
+# Copyright (c) 2018 by James Merrill, all rights reserved
+
 import json
 import argparse
 import Engine.Session
@@ -30,8 +32,7 @@ class UserHistoryData:
             if created < self.past_hard_stop:
                 break
 
-            self.comments.append(Engine.Comment.Comment(comment.permalink, comment.created,
-                                                        comment.subreddit.display_name, comment.body))
+            self.comments.append(Engine.Comment.Comment.from_praw_comment(comment, False))
             self.inc_subreddit_count(comment.subreddit.display_name)
 
     def get_json(self):

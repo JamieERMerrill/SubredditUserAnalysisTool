@@ -1,3 +1,5 @@
+# Copyright (c) 2018 by James Merrill, all rights reserved
+
 from praw.models.reddit import more as more
 
 

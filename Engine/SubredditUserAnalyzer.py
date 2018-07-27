@@ -1,3 +1,5 @@
+# Copyright (c) 2018 by James Merrill, all rights reserved
+
 from Engine import UserHistoryScraper, Session, ConfigureLogging
 import argparse
 import praw.models.reddit.more as more
