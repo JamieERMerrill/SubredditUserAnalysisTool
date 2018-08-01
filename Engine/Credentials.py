@@ -30,16 +30,16 @@ class Credentials:
         out_dict["user_agent"] = self.user_agent
 
         with open(CREDS_FILE, 'w') as fp:
-            json.dump(fp, out_dict)
+            json.dump(out_dict, fp)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--id", default=None, help="The Client ID to write to the credentials file.")
-    parser.add_argument("--secret", default=None, help="The client secret to write to the credentials file.")
-    parser.add_argument("--username", default=None, help="The username to write to the credentials file.")
-    parser.add_argument("--password", default=None, help="The password to write to the credentials file.")
-    parser.add_argument("--user_agent", default=None, help="The user-agent to write to the credentials file.")
+    parser.add_argument("--id", default=None, type=str, help="The Client ID to write to the credentials file.")
+    parser.add_argument("--secret", default=None, type=str, help="The client secret to write to the credentials file.")
+    parser.add_argument("--username", default=None, type=str, help="The username to write to the credentials file.")
+    parser.add_argument("--password", default=None, type=str, help="The password to write to the credentials file.")
+    parser.add_argument("--user_agent", default=None, type=str, help="The user-agent to write to the credentials file.")
     args = parser.parse_args()
 
     creds = Credentials(args.id, args.secret, args.username, args.password, args.user_agent)
