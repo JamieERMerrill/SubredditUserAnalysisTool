@@ -1,8 +1,11 @@
 # Copyright (c) 2018 by James Merrill, all rights reserved
 
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from Engine import UserHistoryScraper, Session, ConfigureLogging, Post
 import argparse
-import os
 import datetime
 import logging
 
