@@ -1,5 +1,4 @@
 from Engine.Comment import Comment
-from praw.models.reddit.more import MoreComments
 import json
 import os
 import logging
@@ -50,11 +49,8 @@ class Post:
     def from_praw_post(cls, praw_post):
         comments = list()
 
+        praw_post.comments.replace_more(limit=None)
         for praw_comment in praw_post.comments:
-            if isinstance(praw_comment, MoreComments):
-                for child in praw_comment.children:
-                    comments.append(Comment.from_praw_comment(child, True))
-
             comments.append(Comment.from_praw_comment(praw_comment, True))
 
         flattened = list()

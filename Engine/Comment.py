@@ -1,6 +1,6 @@
 # Copyright (c) 2018 by James Merrill, all rights reserved
 
-from praw.models.reddit import more, comment
+from praw.models.reddit import comment
 
 
 class Comment:
@@ -51,17 +51,13 @@ class Comment:
     @classmethod
     def from_praw_comment(cls, praw_comment, with_children=True):
         # Deleted comments have no name attached to them.
-        author_name = praw_comment.author.name if hasattr(praw_comment, 'name') else "MISSING NAME"
+        author_name = praw_comment.author.name if hasattr(praw_comment.author, 'name') else "MISSING NAME"
 
         obj = cls(praw_comment.permalink, praw_comment.created, praw_comment.subreddit.display_name,
                   praw_comment.body, author_name)
 
         if with_children:
             for reply in praw_comment.replies:
-                if isinstance(reply, comment.Comment):
-                    obj.add_child(cls.from_praw_comment(reply, True))
-                elif isinstance(reply, more.MoreComments):
-                    for child in reply.children:
-                        obj.add_child(cls.from_praw_comment(child, True))
+                obj.add_child(cls.from_praw_comment(reply, True))
 
         return obj
