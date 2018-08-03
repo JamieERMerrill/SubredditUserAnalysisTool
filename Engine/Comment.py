@@ -35,7 +35,7 @@ class Comment:
 
     def get_unique_commenters_at_node_and_lower(self):
         flattened = self.get_flattened_child_list()
-        return set([node.author for node in flattened])
+        return set([node.author for node in flattened if node.author != "MISSING NAME"])
 
     @classmethod
     def from_dict(cls, the_dict):
