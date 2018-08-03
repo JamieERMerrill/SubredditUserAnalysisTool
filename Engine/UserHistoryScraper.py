@@ -53,7 +53,7 @@ class UserHistoryScraper:
 
     def dump(self, output_folder):
         file_name = Sanitizer.sanitize_filename('{}.json'.format(self.un))
-        dump_path = "{}/{}".format(output_folder, file_name)
+        dump_path = Sanitizer.trim_file_path("{}/{}".format(output_folder, file_name))
         logging.info("Writing {}".format(dump_path))
         with open(dump_path, 'w') as fp:
             fp.write(self.uhd.get_json())

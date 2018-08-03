@@ -1,5 +1,5 @@
 from Engine.Comment import Comment
-from Engine.Sanitizer import sanitize_filename
+from Engine import Sanitizer
 import json
 import os
 import logging
@@ -27,8 +27,8 @@ class Post:
         return return_dict
 
     def dump(self, target_dir):
-        filename = "{}.json".format(sanitize_filename(self.title))
-        target_file = os.path.join(target_dir, filename)
+        filename = "{}.json".format(Sanitizer.sanitize_filename(self.title))
+        target_file = Sanitizer.trim_file_path(os.path.join(target_dir, filename))
 
         logging.info("Writing {}".format(target_file))
         with open(target_file, 'w') as fp:
