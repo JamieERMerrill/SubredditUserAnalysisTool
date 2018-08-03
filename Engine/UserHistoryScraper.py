@@ -6,6 +6,7 @@ import Engine.Session
 import datetime
 import Engine.Comment
 from Engine import ConfigureLogging
+from Engine import Sanitizer
 import logging
 
 
@@ -51,7 +52,8 @@ class UserHistoryScraper:
         self.uhd = UserHistoryData(self.user, length_of_history_in_days)
 
     def dump(self, output_folder):
-        dump_path = "{}/{}.json".format(output_folder, self.un)
+        file_name = Sanitizer.sanitize_filename('{}.json'.format(self.un))
+        dump_path = "{}/{}".format(output_folder, file_name)
         logging.info("Writing {}".format(dump_path))
         with open(dump_path, 'w') as fp:
             fp.write(self.uhd.get_json())
